@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-export default function Register() {
-  const [formData, setFormData] = useState({ username: "", email: "", password: "" });
+export default function Login() {
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -9,18 +9,17 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Registering:", formData);
-    // 你可以在这里发起 POST 请求到你的后端 API
+    console.log("Logging in:", formData);
+    // 在这里添加登录 API 调用逻辑
   };
 
   return (
     <div>
-      <h2>注册</h2>
+      <h2>登录</h2>
       <form onSubmit={handleSubmit}>
-        <input name="username" placeholder="用户名" value={formData.username} onChange={handleChange} required />
         <input type="email" name="email" placeholder="邮箱" value={formData.email} onChange={handleChange} required />
         <input type="password" name="password" placeholder="密码" value={formData.password} onChange={handleChange} required />
-        <button type="submit">注册</button>
+        <button type="submit">登录</button>
       </form>
     </div>
   );
