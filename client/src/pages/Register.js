@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function Register() {
   const [formData, setFormData] = useState({ username: "", email: "", password: "" });
@@ -7,10 +8,18 @@ export default function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Registering:", formData);
-    // 你可以在这里发起 POST 请求到你的后端 API
+
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_API}/register`, formData);
+      alert("注册成功，请登录！");
+      window.location.href = "/login";
+    } catch (err) {
+      console.error("注册失败:", err);
+      alert("注册失败：" + (err.response?.data?.message || err.message));
+    }
   };
 
   return (
@@ -25,3 +34,4 @@ export default function Register() {
     </div>
   );
 }
+
