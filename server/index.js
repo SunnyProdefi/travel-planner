@@ -4,23 +4,23 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-
-// ✅ 修复 CORS 跨域问题
-app.use(cors({
-  origin: "*", // ← 临时放开，确认是否是前端访问受限
-  methods: ["GET", "POST"],
-  credentials: false
-}));
-
+app.use(cors({ origin: "*", methods: ["GET", "POST"], credentials: false }));
 app.use(express.json());
 
 // 路由
 const authRoutes = require("./routes/auth");
 app.use("/api", authRoutes);
 
-// 端口监听
+// 默认根路径响应（用于调试）
+app.get("/", (req, res) => {
+  res.send("API running");
+});
+
 const PORT = process.env.PORT || 5000;
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => app.listen(PORT, () => console.log("Server running on port", PORT)))
-  .catch((err) => console.error(err));
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch((err) => console.error("MongoDB connection error:", err));
