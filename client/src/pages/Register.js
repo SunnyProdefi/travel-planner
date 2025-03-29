@@ -14,19 +14,20 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("提交注册:", formData);
-    console.log("API 地址:", process.env.REACT_APP_API);
+    console.log("Registering:", formData);
+    console.log("API 地址:", process.env.REACT_APP_API); // 🧪关键！
 
     try {
       const res = await axios.post(`${process.env.REACT_APP_API}/register`, formData);
+      console.log("注册成功，响应结果：", res.data); // ✅ 成功回调
       alert("✅ 注册成功，请登录！");
       window.location.href = "/login";
     } catch (err) {
-      console.error("注册失败:", err);
-      const msg = err.response?.data?.message || "注册失败，请稍后再试。";
-      alert("❌ " + msg);
+      console.error("注册失败:", err); // ❌ 失败回调
+      alert("注册失败：" + (err.response?.data?.message || err.message));
     }
   };
+
 
   return (
     <div>
