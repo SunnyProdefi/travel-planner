@@ -7,13 +7,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const User = require("./models/User");
+// 路由
+const authRoutes = require("./routes/auth");
+app.use("/api", authRoutes);
 
-app.post("/api/register", async (req, res) => {
-  const { username, password } = req.body;
-  const user = new User({ username, password });
-  await user.save();
-  res.send({ message: "User registered" });
-});
-
-app.listen(5000, () => console.log("Server running on port 5000"));
+const PORT = process.env.PORT || 5000;
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => app.listen(PORT, () => console.log("Server running on port", PORT)))
+  .catch((err) => console.error(err));
