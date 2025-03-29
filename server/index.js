@@ -7,9 +7,9 @@ const app = express();
 
 // ✅ 修复 CORS 跨域问题
 app.use(cors({
-  origin: "https://travel-planner-37o.pages.dev", // 改为你的前端地址
+  origin: "*", // ← 临时放开，确认是否是前端访问受限
   methods: ["GET", "POST"],
-  credentials: true
+  credentials: false
 }));
 
 app.use(express.json());
