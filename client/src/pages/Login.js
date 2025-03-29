@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -7,10 +8,23 @@ export default function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Logging in:", formData);
-    // 在这里添加登录 API 调用逻辑
+    console.log("API 地址:", process.env.REACT_APP_API); // 可以确认当前 API 是不是对的
+
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_API}/login`, formData);
+      console.log("✅ 登录成功", res.data);
+
+      // 保存 token（可选，或者跳转）
+      localStorage.setItem("token", res.data.token);
+      alert("✅ 登录成功！");
+      window.location.href = "/dashboard"; // 可跳转其他页面
+    } catch (err) {
+      console.error("❌ 登录失败:", err);
+      alert("登录失败：" + (err.response?.data?.message || err.message));
+    }
   };
 
   return (
@@ -24,3 +38,4 @@ export default function Login() {
     </div>
   );
 }
+
