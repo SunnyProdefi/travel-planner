@@ -4,7 +4,11 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-app.use(cors({ origin: "*", methods: ["GET", "POST"], credentials: false }));
+app.use(cors({
+  origin: "*", // 临时允许所有源请求，测试成功后建议只允许特定前端域名
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(express.json());
 
 // 路由
