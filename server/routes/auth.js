@@ -5,12 +5,26 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // 注册
+// 注册
 router.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
-  const hashed = await bcrypt.hash(password, 10);
-  const user = new User({ username, email, password: hashed });
-  await user.save();
-  res.json({ message: "注册成功" });
+  try {
+    const { username, email, password } = req.body;
+
+    // 检查是否已注册
+    const exists = await User.findOne({ email });
+    if (exists) {
+      return res.status(400).json({ message: "邮箱已注册" });
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+    const user = new User({ username, email, password: hashed });
+    await user.save();
+
+    res.json({ message: "注册成功" });
+  } catch (err) {
+    console.error("注册失败:", err);
+    res.status(500).json({ message: "服务器错误，请稍后再试" });
+  }
 });
 
 // 登录
