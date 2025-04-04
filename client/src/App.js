@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import TripForm from "./components/TripForm";
+import TripDetail from "./components/TripDetail";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/trips/new" element={<TripForm />} />
         <Route path="/trips/:id/edit" element={<TripForm />} />
+        <Route path="/trips/:id" element={<TripDetail />} />
       </Routes>
     </Router>
   );
