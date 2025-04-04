@@ -22,7 +22,7 @@ const TripForm = () => {
       const fetchTrip = async () => {
         try {
           const token = localStorage.getItem('token');
-          const response = await axios.get(`/api/trips/${id}`, {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/trips/${id}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           const trip = response.data;
@@ -48,18 +48,33 @@ const TripForm = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        setError('请先登录');
+        setLoading(false);
+        return;
+      }
+
+      // 处理表单数据
+      const submitData = {
+        ...formData,
+        startDate: new Date(formData.startDate),
+        endDate: new Date(formData.endDate),
+        budget: formData.budget ? Number(formData.budget) : 0
+      };
+
       if (id) {
-        await axios.put(`/api/trips/${id}`, formData, {
+        await axios.put(`${process.env.REACT_APP_API_URL}/api/trips/${id}`, submitData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       } else {
-        await axios.post('/api/trips', formData, {
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/trips`, submitData, {
           headers: { Authorization: `Bearer ${token}` }
         });
       }
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || '保存失败');
+      console.error('保存失败:', err);
+      setError(err.response?.data?.message || '保存失败，请稍后重试');
     } finally {
       setLoading(false);
     }
@@ -128,7 +143,7 @@ const TripForm = () => {
             min="0"
           />
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading} className="btn btn-primary">
           {loading ? '保存中...' : '保存'}
         </button>
       </form>
