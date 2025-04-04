@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/TripForm.css";
@@ -19,13 +19,7 @@ export default function TripForm() {
     itinerary: [""]
   });
 
-  useEffect(() => {
-    if (id) {
-      fetchTrip();
-    }
-  }, [id]);
-
-  const fetchTrip = async () => {
+  const fetchTrip = useCallback(async () => {
     try {
       setLoading(true);
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/trips/${id}`);
@@ -46,7 +40,13 @@ export default function TripForm() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      fetchTrip();
+    }
+  }, [id, fetchTrip]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
