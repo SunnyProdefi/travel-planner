@@ -30,7 +30,9 @@ app.use(express.json());
 
 // ✅ 路由引入
 const authRoutes = require("./routes/auth");
-app.use("/api", authRoutes);
+const tripRoutes = require("./routes/trips");
+app.use("/api/auth", authRoutes);
+app.use("/api/trips", tripRoutes);
 
 // ✅ 默认根路径调试
 app.get("/", (req, res) => {

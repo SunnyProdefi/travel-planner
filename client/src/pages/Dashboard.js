@@ -1,10 +1,17 @@
-import React from "react";
+import React from 'react';
+import TripList from '../components/TripList';
 
-export default function Dashboard() {
+const Dashboard = () => {
   return (
-    <div>
-      <h2>欢迎来到你的旅行计划主页</h2>
-      <p>这里你可以创建、编辑和查看你的旅行安排。</p>
+    <div className="dashboard">
+      <header>
+        <h1>旅行计划管理</h1>
+      </header>
+      <main>
+        <TripList />
+      </main>
     </div>
   );
-}
+};
+
+export default Dashboard;
